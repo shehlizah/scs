@@ -1,0 +1,3 @@
+[11-Dec-2025 22:30:14 Asia/Jakarta] PHP Deprecated:  auto_detect_line_endings is deprecated in /home/iosahrww/scs.hitechmain.com/vendor/vlucas/phpdotenv/src/Loader.php on line 172
+[11-Dec-2025 22:30:14 Asia/Jakarta] PHP Deprecated:  auto_detect_line_endings is deprecated in /home/iosahrww/scs.hitechmain.com/vendor/vlucas/phpdotenv/src/Loader.php on line 172
+[11-Dec-2025 22:30:14 Asia/Jakarta] PHP Fatal error:  Declaration of SecurityPlugin::setDI($di) must be compatible with Phalcon\Di\InjectionAwareInterface::setDI(Phalcon\Di\DiInterface $container): void in /home/iosahrww/scs.hitechmain.com/app/plugins/SecurityPlugin.php on line 22
