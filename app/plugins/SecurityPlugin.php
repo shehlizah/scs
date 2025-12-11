@@ -6,6 +6,7 @@ use Phalcon\Events\Event;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Acl\Adapter\Memory as AclList;
 use Phalcon\Di\InjectionAwareInterface;
+use Phalcon\Di\DiInterface;
 
 class SecurityPlugin implements InjectionAwareInterface
 {
@@ -19,12 +20,12 @@ class SecurityPlugin implements InjectionAwareInterface
         $this->roles = 'Guests';
     }
 
-    public function setDI($di)
+    public function setDI(DiInterface $container): void
     {
-        $this->di = $di;
+        $this->di = $container;
     }
 
-    public function getDI()
+    public function getDI(): DiInterface
     {
         return $this->di;
     }

@@ -4,6 +4,7 @@ use Phalcon\Dispatcher;
 use Phalcon\Mvc\Dispatcher\Exception as DispatcherException;
 use Phalcon\Mvc\Dispatcher as MvcDispatcher;
 use Phalcon\Di\InjectionAwareInterface;
+use Phalcon\Di\DiInterface;
 
 /**
  * ExceptionPlugin
@@ -14,12 +15,12 @@ class ExceptionPlugin implements InjectionAwareInterface
 {
 	protected $di;
 
-	public function setDI($di)
+	public function setDI(DiInterface $container): void
 	{
-		$this->di = $di;
+		$this->di = $container;
 	}
 
-	public function getDI()
+	public function getDI(): DiInterface
 	{
 		return $this->di;
 	}
