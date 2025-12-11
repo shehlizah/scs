@@ -167,9 +167,23 @@ $di->set('flashSession', function () {
  * Start the session the first time some component request the session service
  */
 $di->setShared('session', function () {
+    // Phalcon 4+: use Session\Manager with Adapter\Stream
+    if (class_exists('Phalcon\\Session\\Manager')) {
+        $manager = new \Phalcon\Session\Manager();
+        // Prefer a writable path; fallback to system temp
+        $savePath = is_dir(BASE_PATH . '/cache') ? (BASE_PATH . '/cache') : sys_get_temp_dir();
+        // Stream adapter
+        $adapter = new \Phalcon\Session\Adapter\Stream([
+            'savePath' => $savePath
+        ]);
+        $manager->setAdapter($adapter);
+        $manager->start();
+        return $manager;
+    }
+
+    // Phalcon 3.x fallback
     $session = new SessionAdapter();
     $session->start();
-
     return $session;
 });
 
@@ -224,8 +238,8 @@ $di->setShared('logger', function() {
     }
     
     $request = new Request();
-    $session = new SessionAdapter();
-    $session->start();
+    // Use shared session service to support both Phalcon 3 and 4
+    $session = $this->getShared('session');
     $users = 'unknown users';
     
     if ($session->has('auth')) {
