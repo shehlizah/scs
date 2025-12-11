@@ -1,5 +1,5 @@
 <?php
-use Phalcon\Acl;
+use Phalcon\Acl\Enum\Action;
 use Phalcon\Acl\Role;
 use Phalcon\Acl\Resource;
 use Phalcon\Events\Event;
@@ -176,7 +176,10 @@ class SecurityPlugin implements InjectionAwareInterface
     public function getAcl()
     {
         $acl = new AclList();
-        $acl->setDefaultAction(Acl::DENY);
+        // Phalcon 4 uses Enum\Action for allow/deny
+        if (class_exists('Phalcon\\Acl\\Enum\\Action')) {
+            $acl->setDefaultAction(Action::DENY);
+        }
         $roles=$this->rolesUsers();
         $publicResources=$this->publicResources();
 
@@ -281,7 +284,7 @@ class SecurityPlugin implements InjectionAwareInterface
         	 * show error 403 forbidden access
         	 */
 
-            if($allowed != Acl::ALLOW)
+            if($allowed != (class_exists('Phalcon\\Acl\\Enum\\Action') ? Action::ALLOW : 1))
             {
                 if($this->request->isAjax())
                 {
