@@ -48,6 +48,24 @@ class SecurityPlugin implements InjectionAwareInterface
     }
 
     /**
+     * Safe getter for modelsManager from DI container
+     */
+    private function getModelsManager()
+    {
+        if (!$this->di) {
+            return null;
+        }
+        try {
+            if ($this->di->has('modelsManager')) {
+                return $this->di->get('modelsManager');
+            }
+        } catch (\Exception $e) {
+            return null;
+        }
+        return null;
+    }
+
+    /**
 	 * register roles users
 	 */
     private function rolesUsers()
@@ -88,41 +106,53 @@ class SecurityPlugin implements InjectionAwareInterface
     public function privateAllResource()
     {
         $data=[];
-        $resource=$this->modelsManager->createBuilder()
-            ->from("MAccessList")
-            ->columns("MAccessList.resources_name,MAccessList.roles")
-            ->join("MMenu","MMenu.resources_name=MAccessList.resources_name AND MMenu.access_name=MAccessList.access_name")
-            ->where("MAccessList.roles='$this->roles'")
-            ->groupBy("MAccessList.resources_name,MAccessList.roles")
-            ->getQuery()
-            ->execute();
+        $modelsManager = $this->getModelsManager();
+        
+        if (!$modelsManager) {
+            return $data;
+        }
+        
+        try {
+            $resource = $modelsManager->createBuilder()
+                ->from("MAccessList")
+                ->columns("MAccessList.resources_name,MAccessList.roles")
+                ->join("MMenu","MMenu.resources_name=MAccessList.resources_name AND MMenu.access_name=MAccessList.access_name")
+                ->where("MAccessList.roles='$this->roles'")
+                ->groupBy("MAccessList.resources_name,MAccessList.roles")
+                ->getQuery()
+                ->execute();
 
-        if($resource)
-        {
-            foreach($resource as $r)
+            if($resource)
             {
-                $access=MAccessList::find(
-                    [
-                        "roles = :roles: AND resources_name = :resources_name:",
-                        "columns"=>"access_name",
-                        "bind"=>[
-                            "roles"=>$r->roles,
-                            "resources_name"=>$r->resources_name
-                        ]
-                    ]
-                );
-                $data[$r->resources_name]=[];
-                if($access)
+                foreach($resource as $r)
                 {
-                    $accessList=[];
-                    foreach($access as $a)
+                    $access=MAccessList::find(
+                        [
+                            "roles = :roles: AND resources_name = :resources_name:",
+                            "columns"=>"access_name",
+                            "bind"=>[
+                                "roles"=>$r->roles,
+                                "resources_name"=>$r->resources_name
+                            ]
+                        ]
+                    );
+                    $data[$r->resources_name]=[];
+                    if($access)
                     {
-                        $accessList[]=$a->access_name;
+                        $accessList=[];
+                        foreach($access as $a)
+                        {
+                            $accessList[]=$a->access_name;
+                        }
+                        $data[$r->resources_name]=$accessList;
                     }
-                    $data[$r->resources_name]=$accessList;
                 }
             }
+        } catch (\Exception $e) {
+            // Return empty data on error
+            return $data;
         }
+        
         return $data;
     }
 
@@ -132,41 +162,54 @@ class SecurityPlugin implements InjectionAwareInterface
     private function PrivateResources($allowed=1)
     {
         $data=[];
-        $resource=$this->modelsManager->createBuilder()
-            ->from("MAccessList")
-            ->columns("MAccessList.resources_name,MAccessList.roles,MAccessList.access_name,MAccessList.allowed")
-            ->join("MMenu","MMenu.resources_name=MAccessList.resources_name AND MMenu.access_name=MAccessList.access_name")
-            ->groupBy("MAccessList.resources_name,MAccessList.roles,MAccessList.access_name,MAccessList.allowed")
-            ->where("MAccessList.roles='$this->roles' AND MAccessList.allowed=$allowed")
-            ->getQuery()
-            ->execute();
-        if($resource)
-        {
-            foreach($resource as $r)
+        $modelsManager = $this->getModelsManager();
+        
+        if (!$modelsManager) {
+            return $data;
+        }
+        
+        try {
+            $resource = $modelsManager->createBuilder()
+                ->from("MAccessList")
+                ->columns("MAccessList.resources_name,MAccessList.roles,MAccessList.access_name,MAccessList.allowed")
+                ->join("MMenu","MMenu.resources_name=MAccessList.resources_name AND MMenu.access_name=MAccessList.access_name")
+                ->groupBy("MAccessList.resources_name,MAccessList.roles,MAccessList.access_name,MAccessList.allowed")
+                ->where("MAccessList.roles='$this->roles' AND MAccessList.allowed=$allowed")
+                ->getQuery()
+                ->execute();
+                
+            if($resource)
             {
-                $access=MAccessList::find(
-                    [
-                        "roles = :roles: AND resources_name = :resources_name: AND allowed = :allowed:",
-                        "columns"=>"access_name",
-                        "bind"=>[
-                            "roles"=>$r->roles,
-                            "resources_name"=>$r->resources_name,
-                            "allowed"=>$r->allowed
-                        ]
-                    ]
-                );
-                $data[$r->resources_name]=[];
-                if($access)
+                foreach($resource as $r)
                 {
-                    $accessList=[];
-                    foreach($access as $a)
+                    $access=MAccessList::find(
+                        [
+                            "roles = :roles: AND resources_name = :resources_name: AND allowed = :allowed:",
+                            "columns"=>"access_name",
+                            "bind"=>[
+                                "roles"=>$r->roles,
+                                "resources_name"=>$r->resources_name,
+                                "allowed"=>$r->allowed
+                            ]
+                        ]
+                    );
+                    $data[$r->resources_name]=[];
+                    if($access)
                     {
-                        $accessList[]=$a->access_name;
+                        $accessList=[];
+                        foreach($access as $a)
+                        {
+                            $accessList[]=$a->access_name;
+                        }
+                        $data[$r->resources_name]=$accessList;
                     }
-                    $data[$r->resources_name]=$accessList;
                 }
             }
+        } catch (\Exception $e) {
+            // Return empty data on error
+            return $data;
         }
+        
         return $data;
     }
 
