@@ -1,0 +1,11 @@
+catch at: 2025-08-01 22:49:09
+uri: api/
+ip: 182.253.36.167
+get: {"_url":"\/api"}
+post: []
+server: {"USER":"www-data","HOME":"\/var\/www","HTTP_HOST":"34.101.51.37","HTTP_ACCEPT_ENCODING":"gzip, br, deflate","HTTP_ACCEPT":"application\/json","HTTP_USER_AGENT":"Mozilla\/5.0 (iPhone; CPU iPhone OS 17_5_1 like Mac OS X) AppleWebKit\/605.1.15 (KHTML, like Gecko) Version\/17.4.1 Mobile\/15E148 Safari\/604.1","REDIRECT_STATUS":"200","SERVER_NAME":"dev.disdiksulsel.id","SERVER_PORT":"443","SERVER_ADDR":"10.184.0.6","REMOTE_PORT":"58016","REMOTE_ADDR":"182.253.36.167","SERVER_SOFTWARE":"nginx\/1.18.0","GATEWAY_INTERFACE":"CGI\/1.1","HTTPS":"on","REQUEST_SCHEME":"https","SERVER_PROTOCOL":"HTTP\/1.1","DOCUMENT_ROOT":"\/home\/devops\/web_dev\/scs_hq\/public","DOCUMENT_URI":"\/index.php","REQUEST_URI":"\/api","SCRIPT_NAME":"\/index.php","CONTENT_LENGTH":"","CONTENT_TYPE":"","REQUEST_METHOD":"GET","QUERY_STRING":"_url=\/api&","SCRIPT_FILENAME":"\/home\/devops\/web_dev\/scs_hq\/public\/index.php","FCGI_ROLE":"RESPONDER","PHP_SELF":"\/index.php","REQUEST_TIME_FLOAT":1754063347.728473,"REQUEST_TIME":1754063347,"DB_HOST":"10.184.0.3","DB_USER":"scs_hq","DB_PASS":"P@ssw0rd@2o24","DB_NAME":"scs_db","BASE_URI":"https:\/\/disdiksulsel.id","BASE_URI_FILE":"https:\/\/api.disdiksulsel.id\/","DB_REPORT_HOST":"localhost","DB_REPORT_USER":"root","DB_REPORT_PASS":"Kis@2o22","DB_REPORT_NAME":"scs","NFX_ACCESS_KEY":"8XAKONYJ2UEYCKOWV0EA4LUZL","NFX_TIMESTAMP":"20220517T075422Z","NFX_TOKEN":"c9fefd5f9a97cd4eedb153b1da08638eab0b7917d581c75e835e63408945c866","NFX_CREATE_ENROLL":"https:\/\/api.cloud.nodeflux.io\/syncv2\/analytics\/create-face-enrollment","NFX_FACEMATCH_ENROLL":"https:\/\/api.cloud.nodeflux.io\/syncv2\/analytics\/face-match-enrollment","COMPILE":"TRUE","PASSDEFAULT":"admin"}
+request: {"_url":"\/api"}
+phpinput_decode: 
+phpinput: 
+response: {"smc":"20250801224909","response_facematch":null,"xcsrftoken":null,"nvr_cookie":null}
+-----------------------------------------------------------------

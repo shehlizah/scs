@@ -1,0 +1,23 @@
+<?php 
+class RefAgama extends \Phalcon\Mvc\Model 
+{ 
+   public function initialize() 
+	{ 
+		$this->setSource("ref_agama"); 
+	} 
+ 
+	public function getSource() 
+	{ 
+		return 'ref_agama'; 
+	} 
+ 
+	public static function find($parameters = null) 
+	{ 
+		return parent::find($parameters); 
+	} 
+ 
+	public static function findFirst($parameters = null) 
+	{ 
+		return parent::findFirst($parameters); 
+	} 
+} 
