@@ -4,14 +4,8 @@ class LeaveRequest extends \Phalcon\Mvc\Model
    public function initialize() 
 	{ 
 		$this->setSource("leave_request"); 
-	} 
- 
-	public function getSource() 
-	{ 
-		return 'leave_request'; 
-	} 
- 
-	public static function find($parameters = null) 
+	}
+public static function find($parameters = null) 
 	{ 
 		return parent::find($parameters); 
 	} 

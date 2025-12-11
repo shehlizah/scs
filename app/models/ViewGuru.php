@@ -4,14 +4,8 @@ class ViewGuru extends \Phalcon\Mvc\Model
    public function initialize() 
 	{ 
 		$this->setSource("view_guru"); 
-	} 
- 
-	public function getSource() 
-	{ 
-		return 'view_guru'; 
-	} 
- 
-	public static function find($parameters = null) 
+	}
+public static function find($parameters = null) 
 	{ 
 		return parent::find($parameters); 
 	} 

@@ -4,14 +4,8 @@ class AbsensiSiswa extends \Phalcon\Mvc\Model
    public function initialize() 
 	{ 
 		$this->setSource("absensi_siswa"); 
-	} 
- 
-	public function getSource() 
-	{ 
-		return 'absensi_siswa'; 
-	} 
- 
-	public static function find($parameters = null) 
+	}
+public static function find($parameters = null) 
 	{ 
 		return parent::find($parameters); 
 	} 

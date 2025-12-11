@@ -4,14 +4,8 @@ class RefKabkota extends \Phalcon\Mvc\Model
    public function initialize() 
 	{ 
 		$this->setSource("ref_kabkota"); 
-	} 
- 
-	public function getSource() 
-	{ 
-		return 'ref_kabkota'; 
-	} 
- 
-	public static function find($parameters = null) 
+	}
+public static function find($parameters = null) 
 	{ 
 		return parent::find($parameters); 
 	} 

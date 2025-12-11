@@ -4,14 +4,8 @@ class SekolahRombel extends \Phalcon\Mvc\Model
    public function initialize() 
 	{ 
 		$this->setSource("sekolah_rombel"); 
-	} 
- 
-	public function getSource() 
-	{ 
-		return 'sekolah_rombel'; 
-	} 
- 
-	public static function find($parameters = null) 
+	}
+public static function find($parameters = null) 
 	{ 
 		return parent::find($parameters); 
 	} 

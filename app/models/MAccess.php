@@ -4,14 +4,8 @@ class MAccess extends \Phalcon\Mvc\Model
    public function initialize() 
 	{ 
 		$this->setSource("m_access"); 
-	} 
- 
-	public function getSource() 
-	{ 
-		return 'm_access'; 
-	} 
- 
-	public static function find($parameters = null) 
+	}
+public static function find($parameters = null) 
 	{ 
 		return parent::find($parameters); 
 	} 

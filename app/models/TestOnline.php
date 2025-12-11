@@ -4,14 +4,8 @@ class TestOnline extends \Phalcon\Mvc\Model
    public function initialize() 
 	{ 
 		$this->setSource("test_online"); 
-	} 
- 
-	public function getSource() 
-	{ 
-		return 'test_online'; 
-	} 
- 
-	public static function find($parameters = null) 
+	}
+public static function find($parameters = null) 
 	{ 
 		return parent::find($parameters); 
 	} 

@@ -4,14 +4,8 @@ class Facematch extends \Phalcon\Mvc\Model
    public function initialize() 
 	{ 
 		$this->setSource("facematch"); 
-	} 
- 
-	public function getSource() 
-	{ 
-		return 'facematch'; 
-	} 
- 
-	public static function find($parameters = null) 
+	}
+public static function find($parameters = null) 
 	{ 
 		return parent::find($parameters); 
 	} 

@@ -4,14 +4,8 @@ class HeartbeatScs extends \Phalcon\Mvc\Model
    public function initialize() 
 	{ 
 		$this->setSource("heartbeat_scs"); 
-	} 
- 
-	public function getSource() 
-	{ 
-		return 'heartbeat_scs'; 
-	} 
- 
-	public static function find($parameters = null) 
+	}
+public static function find($parameters = null) 
 	{ 
 		return parent::find($parameters); 
 	} 

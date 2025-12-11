@@ -4,14 +4,8 @@ class Guru extends \Phalcon\Mvc\Model
    public function initialize() 
 	{ 
 		$this->setSource("guru"); 
-	} 
- 
-	public function getSource() 
-	{ 
-		return 'guru'; 
-	} 
- 
-	public static function find($parameters = null) 
+	}
+public static function find($parameters = null) 
 	{ 
 		return parent::find($parameters); 
 	} 

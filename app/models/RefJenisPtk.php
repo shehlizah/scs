@@ -4,14 +4,8 @@ class RefJenisPtk extends \Phalcon\Mvc\Model
    public function initialize() 
 	{ 
 		$this->setSource("ref_jenis_ptk"); 
-	} 
- 
-	public function getSource() 
-	{ 
-		return 'ref_jenis_ptk'; 
-	} 
- 
-	public static function find($parameters = null) 
+	}
+public static function find($parameters = null) 
 	{ 
 		return parent::find($parameters); 
 	} 

@@ -4,14 +4,8 @@ class CctvSekolah extends \Phalcon\Mvc\Model
    public function initialize() 
 	{ 
 		$this->setSource("cctv_sekolah"); 
-	} 
- 
-	public function getSource() 
-	{ 
-		return 'cctv_sekolah'; 
-	} 
- 
-	public static function find($parameters = null) 
+	}
+public static function find($parameters = null) 
 	{ 
 		return parent::find($parameters); 
 	} 
