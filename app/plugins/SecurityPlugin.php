@@ -171,64 +171,107 @@ class SecurityPlugin implements InjectionAwareInterface
     }
 
     /**
-	 * ACL
+	 * ACL - Phalcon 3.x and 4.0+ compatibility wrapper
 	 */
     public function getAcl()
     {
         $acl = new AclList();
-        // Phalcon 4 uses Enum\Action for allow/deny
-        if (class_exists('Phalcon\\Acl\\Enum\\Action')) {
-            $acl->setDefaultAction(Action::DENY);
+        
+        // Set default action based on Phalcon version
+        $denyAction = class_exists('Phalcon\\Acl\\Enum\\Action') ? Action::DENY : 0;
+        $allowAction = class_exists('Phalcon\\Acl\\Enum\\Action') ? Action::ALLOW : 1;
+        
+        // Phalcon 4: check method signature
+        if (method_exists($acl, 'setDefaultAction')) {
+            try {
+                $acl->setDefaultAction($denyAction);
+            } catch (\Exception $e) {
+                // Fallback if setDefaultAction signature is incompatible
+            }
         }
-        $roles=$this->rolesUsers();
-        $publicResources=$this->publicResources();
+        
+        $roles = $this->rolesUsers();
+        $publicResources = $this->publicResources();
 
         /**
     	 * register role users
     	 */
         foreach ($roles as $role) {
-			$acl->addRole($role);
-		}
+            try {
+                $acl->addRole($role);
+            } catch (\Exception $e) {
+                // Skip if role already added or other issue
+            }
+        }
 
         /**
-    	 * register public resources
+    	 * register public resources - handle both Phalcon 3 & 4 APIs
     	 */
-		foreach ($publicResources as $resource => $actions) {
-			$acl->addResource(new Resource($resource), $actions);
-		}
+        foreach ($publicResources as $resource => $actions) {
+            try {
+                // Phalcon 4+: addComponent() method
+                if (method_exists($acl, 'addComponent')) {
+                    $acl->addComponent($resource, $actions);
+                } 
+                // Phalcon 3.x: addResource() with Resource object
+                else if (method_exists($acl, 'addResource')) {
+                    $acl->addResource(new Resource($resource), $actions);
+                }
+            } catch (\Exception $e) {
+                // Skip on error
+            }
+        }
 
         /**
     	 * allow access resource for all roles
     	 */
-		foreach ($publicResources as $resource => $actions) {
-			foreach ($actions as $action){
-				$acl->allow($this->roles, $resource, $action);
-			}
-		}
+        foreach ($publicResources as $resource => $actions) {
+            foreach ($actions as $action) {
+                try {
+                    $acl->allow($this->roles, $resource, $action);
+                } catch (\Exception $e) {
+                    // Skip on error
+                }
+            }
+        }
 
         /**
     	 * allow resource roles users
     	 */
-        $privateAllResource=$this->privateAllResource();
-        $allowResources=$this->PrivateResources(1);
-        if($this->auth != false)
-        {
-           /**
+        $privateAllResource = $this->privateAllResource();
+        $allowResources = $this->PrivateResources(1);
+        
+        if ($this->auth != false) {
+            /**
         	 * register private resources
         	 */
-    		if($privateAllResource != null)
-            {
+            if ($privateAllResource != null) {
                 foreach ($privateAllResource as $resource => $actions) {
-        			$acl->addResource(new Resource($resource), $actions);
-        		}
+                    try {
+                        if (method_exists($acl, 'addComponent')) {
+                            $acl->addComponent($resource, $actions);
+                        } else if (method_exists($acl, 'addResource')) {
+                            $acl->addResource(new Resource($resource), $actions);
+                        }
+                    } catch (\Exception $e) {
+                        // Skip on error
+                    }
+                }
             }
-            if($allowResources != null)
-            {
+            
+            /**
+        	 * allow private resources
+        	 */
+            if ($allowResources != null) {
                 foreach ($allowResources as $resource => $actions) {
-        			foreach ($actions as $action){
-        				$acl->allow($this->roles, $resource, $action);
-        			}
-        		}
+                    foreach ($actions as $action) {
+                        try {
+                            $acl->allow($this->roles, $resource, $action);
+                        } catch (\Exception $e) {
+                            // Skip on error
+                        }
+                    }
+                }
             }
         }
 
@@ -251,6 +294,9 @@ class SecurityPlugin implements InjectionAwareInterface
         $controller = $dispatcher->getControllerName();
         $action = $dispatcher->getActionName();
         $acl = $this->getAcl();
+        
+        $allowValue = class_exists('Phalcon\\Acl\\Enum\\Action') ? Action::ALLOW : 1;
+        
         if($this->auth != false)
         {
             $this->roles = $this->auth->roles;
@@ -284,7 +330,7 @@ class SecurityPlugin implements InjectionAwareInterface
         	 * show error 403 forbidden access
         	 */
 
-            if($allowed != (class_exists('Phalcon\\Acl\\Enum\\Action') ? Action::ALLOW : 1))
+            if($allowed != $allowValue)
             {
                 if($this->request->isAjax())
                 {
